@@ -17,7 +17,18 @@ const AppNavigator = () => {
         screenOptions={{
           tabBarActiveTintColor: '#6200ee',
           tabBarInactiveTintColor: 'gray',
-          headerShown: true,
+          headerShown: false,
+          tabBarStyle: {
+            elevation: 8,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: -2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 3,
+            borderTopWidth: 0,
+            backgroundColor: '#ffffff',
+            height: 64,
+            paddingBottom: 8,
+          },
         }}
       >
         <Tab.Screen
