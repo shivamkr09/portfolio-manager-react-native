@@ -18,24 +18,36 @@ export default function Navigation() {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={{
-          tabBarActiveTintColor: theme.colors.primary,
-          tabBarInactiveTintColor: theme.colors.outline,
+          tabBarActiveTintColor: '#2563eb',
+          tabBarInactiveTintColor: '#64748b',
           tabBarStyle: {
-            elevation: 0,
-            borderTopWidth: 1,
-            borderTopColor: theme.colors.surfaceVariant,
-            height: 60,
+            elevation: 8,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: -2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 3,
+            borderTopWidth: 0,
+            backgroundColor: '#ffffff',
+            height: 64,
             paddingBottom: 8,
           },
           headerStyle: {
-            elevation: 0,
-            shadowOpacity: 0,
-            borderBottomWidth: 1,
-            borderBottomColor: theme.colors.surfaceVariant,
+            elevation: 4,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 3,
+            backgroundColor: '#ffffff',
+            borderBottomWidth: 0,
           },
           headerTitleStyle: {
-            fontWeight: '600',
-            color: theme.colors.onSurface,
+            fontWeight: '700',
+            fontSize: 20,
+            color: '#1f2937',
+          },
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontWeight: '500',
           },
         }}
       >

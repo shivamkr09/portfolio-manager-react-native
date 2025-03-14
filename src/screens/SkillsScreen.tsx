@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, Animated } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { TextInput, Button, Chip, Text, SegmentedButtons, Surface } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
@@ -28,9 +28,9 @@ export default function SkillsScreen() {
 
   return (
     <View style={styles.container}>
-      <Surface style={styles.header} elevation={2}>
-        <Text variant="headlineMedium" style={styles.headerText}>Skills</Text>
-      </Surface>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Skills</Text>
+      </View>
 
       <View style={styles.content}>
         <SegmentedButtons
@@ -65,6 +65,7 @@ export default function SkillsScreen() {
                   onClose={() => dispatch(removeSkill(skill.name))}
                   style={styles.chip}
                   mode="outlined"
+                  textStyle={styles.chipText}
                 >
                   {skill.name}
                 </Chip>
@@ -79,31 +80,36 @@ export default function SkillsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f8fafc',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#ffffff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e2e8f0'
   },
   headerText: {
-    fontWeight: '600',
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#0f172a',
+    letterSpacing: 0.5
   },
   content: {
     flex: 1,
-    padding: 16,
+    padding: 20,
   },
   segments: {
-    marginBottom: 16,
+    marginBottom: 20,
   },
   inputContainer: {
-    marginBottom: 16,
+    marginBottom: 20,
   },
   input: {
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
   },
   skillsContainer: {
     flex: 1,
@@ -111,10 +117,16 @@ const styles = StyleSheet.create({
   chipContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 12,
   },
   chip: {
     marginBottom: 8,
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
+    borderColor: '#e2e8f0',
+  },
+  chipText: {
+    color: '#334155',
+    fontSize: 14,
+    fontWeight: '500',
   },
 });

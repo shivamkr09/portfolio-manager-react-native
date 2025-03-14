@@ -1,10 +1,113 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, Animated } from 'react-native';
-import { Card, TextInput, Button, IconButton, Text, Surface } from 'react-native-paper';
+import { View, ScrollView, StyleSheet } from 'react-native';
+import { Card, TextInput, Button, IconButton, Text } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { updateProjects } from '../store/portfolioSlice';
 import { Project } from '../types/portfolio';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f8fafc'
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#ffffff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e2e8f0'
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#0f172a',
+    letterSpacing: 0.5
+  },
+  scrollContent: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 20
+  },
+  card: {
+    marginBottom: 20,
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    overflow: 'hidden',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 3
+  },
+  cardContent: {
+    padding: 20
+  },
+  projectTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#0f172a',
+    marginBottom: 12,
+    letterSpacing: 0.5
+  },
+  techContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 16
+  },
+  techBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    backgroundColor: '#f1f5f9',
+    borderRadius: 20
+  },
+  techText: {
+    fontSize: 14,
+    color: '#334155',
+    fontWeight: '500'
+  },
+  description: {
+    color: '#475569',
+    marginBottom: 20,
+    lineHeight: 24,
+    fontSize: 16
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    gap: 12
+  },
+  formContainer: {
+    gap: 16
+  },
+  bottomBar: {
+    padding: 20,
+    backgroundColor: '#ffffff',
+    borderTopWidth: 1,
+    borderTopColor: '#e2e8f0'
+  },
+  editButton: {
+    borderRadius: 12
+  },
+  addButton: {
+    borderRadius: 12,
+    paddingVertical: 8
+  },
+  input: {
+    backgroundColor: '#ffffff',
+    fontSize: 16
+  },
+  deleteButton: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: '#fef2f2',
+    borderRadius: 20
+  }
+});
 
 export default function ProjectsScreen() {
   const dispatch = useDispatch();
@@ -44,103 +147,111 @@ export default function ProjectsScreen() {
 
   return (
     <View style={styles.container}>
-      <Surface style={styles.header} elevation={2}>
-        <Text variant="headlineMedium" style={styles.headerText}>Projects</Text>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Projects</Text>
         <Button
           mode={editMode ? 'contained' : 'outlined'}
           onPress={() => editMode ? handleSave() : setEditMode(true)}
-          style={styles.headerButton}
+          style={[styles.editButton, { backgroundColor: editMode ? '#2563eb' : 'transparent' }]}
+          labelStyle={{ fontSize: 14, fontWeight: '600' }}
         >
-          {editMode ? 'Save' : 'Edit'}
+          {editMode ? 'Save Changes' : 'Edit Projects'}
         </Button>
-      </Surface>
+      </View>
 
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+      <ScrollView style={styles.scrollContent}>
         {editedProjects.map((project, index) => (
-          <Card key={index} style={styles.card} elevation={3}>
+          <Card key={index} style={styles.card}>
             <Card.Content style={styles.cardContent}>
               {editMode ? (
-                <View>
+                <View style={styles.formContainer}>
                   <TextInput
-                    label="Title"
+                    label="Project Title"
                     value={project.title}
                     onChangeText={(value) => handleUpdateProject(index, 'title', value)}
-                    style={styles.input}
                     mode="outlined"
+                    style={styles.input}
                   />
                   <TextInput
-                    label="Description"
+                    label="Project Description"
                     value={project.description}
                     onChangeText={(value) => handleUpdateProject(index, 'description', value)}
                     multiline
-                    numberOfLines={3}
-                    style={styles.input}
+                    numberOfLines={4}
                     mode="outlined"
+                    style={styles.input}
                   />
                   <TextInput
                     label="Technologies (comma-separated)"
                     value={project.technologies.join(', ')}
                     onChangeText={(value) => handleUpdateProject(index, 'technologies', value)}
-                    style={styles.input}
                     mode="outlined"
+                    style={styles.input}
                   />
                   <TextInput
                     label="Image URL"
                     value={project.image}
                     onChangeText={(value) => handleUpdateProject(index, 'image', value)}
-                    style={styles.input}
                     mode="outlined"
+                    style={styles.input}
                   />
                   <TextInput
                     label="GitHub URL"
                     value={project.githubUrl}
                     onChangeText={(value) => handleUpdateProject(index, 'githubUrl', value)}
-                    style={styles.input}
                     mode="outlined"
+                    style={styles.input}
                   />
                   <TextInput
                     label="Demo URL"
                     value={project.demoUrl}
                     onChangeText={(value) => handleUpdateProject(index, 'demoUrl', value)}
-                    style={styles.input}
                     mode="outlined"
+                    style={styles.input}
                   />
                   <IconButton
                     icon="delete"
-                    mode="contained-tonal"
+                    size={24}
                     onPress={() => handleRemoveProject(index)}
                     style={styles.deleteButton}
+                    iconColor="#ef4444"
                   />
                 </View>
               ) : (
                 <View>
-                  <Text variant="titleLarge" style={styles.projectTitle}>{project.title}</Text>
+                  <Text style={styles.projectTitle}>{project.title}</Text>
                   <View style={styles.techContainer}>
                     {project.technologies.map((tech, i) => (
-                      <Text key={i} style={styles.techItem}>{tech}</Text>
+                      <View key={i} style={styles.techBadge}>
+                        <Text style={styles.techText}>{tech}</Text>
+                      </View>
                     ))}
                   </View>
-                  <Text variant="bodyMedium" style={styles.description}>{project.description}</Text>
-                  {project.githubUrl && (
-                    <Button
-                      mode="text"
-                      icon="github"
-                      onPress={() => {}}
-                      style={styles.linkButton}
-                    >
-                      View on GitHub
-                    </Button>
-                  )}
-                  {project.demoUrl && (
-                    <Button
-                      mode="text"
-                      icon="web"
-                      onPress={() => {}}
-                      style={styles.linkButton}
-                    >
-                      View Demo
-                    </Button>
-                  )}
+                  <Text style={styles.description}>{project.description}</Text>
+                  <View style={styles.buttonContainer}>
+                    {project.githubUrl && (
+                      <Button
+                        mode="outlined"
+                        icon="github"
+                        onPress={() => {}}
+                        style={{ flex: 1, borderColor: '#2563eb' }}
+                        labelStyle={{ color: '#2563eb', fontSize: 14, fontWeight: '600' }}
+                      >
+                        View Code
+                      </Button>
+                    )}
+                    {project.demoUrl && (
+                      <Button
+                        mode="contained"
+                        icon="web"
+                        onPress={() => {}}
+                        style={{ flex: 1, backgroundColor: '#2563eb' }}
+                        labelStyle={{ fontSize: 14, fontWeight: '600' }}
+                      >
+                        Live Demo
+                      </Button>
+                    )}
+                  </View>
                 </View>
               )}
             </Card.Content>
@@ -149,89 +260,18 @@ export default function ProjectsScreen() {
       </ScrollView>
 
       {editMode && (
-        <Button
-          mode="contained"
-          onPress={handleAddProject}
-          style={styles.addButton}
-          icon="plus"
-        >
-          Add Project
-        </Button>
+        <View style={styles.bottomBar}>
+          <Button
+            mode="contained"
+            onPress={handleAddProject}
+            icon="plus"
+            style={[styles.addButton, { backgroundColor: '#2563eb' }]}
+            labelStyle={{ fontSize: 14, fontWeight: '600' }}
+          >
+            Add New Project
+          </Button>
+        </View>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#fff',
-  },
-  headerText: {
-    fontWeight: '600',
-  },
-  headerButton: {
-    marginLeft: 16,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    padding: 16,
-  },
-  card: {
-    marginBottom: 16,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-  },
-  cardContent: {
-    padding: 16,
-  },
-  input: {
-    marginBottom: 12,
-    backgroundColor: '#fff',
-  },
-  projectTitle: {
-    marginBottom: 8,
-    fontWeight: '600',
-  },
-  techContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 12,
-  },
-  techItem: {
-    backgroundColor: '#e0e0e0',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-    marginRight: 8,
-    marginBottom: 8,
-    fontSize: 12,
-  },
-  description: {
-    marginBottom: 16,
-    lineHeight: 20,
-  },
-  linkButton: {
-    marginVertical: 4,
-    alignSelf: 'flex-start',
-  },
-  deleteButton: {
-    position: 'absolute',
-    right: 0,
-    top: 0,
-  },
-  addButton: {
-    margin: 16,
-    borderRadius: 8,
-  },
-});
